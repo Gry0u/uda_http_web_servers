@@ -41,6 +41,7 @@ class MessageHandler(BaseHTTPRequestHandler):
         memory.append(message)
 
         # 1. Send a 303 redirect back to the root page.
+        self.send_response(303)
 
     def do_GET(self):
         # First, send a 200 OK response.
@@ -51,9 +52,9 @@ class MessageHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         # 2. Put the response together out of the form and the stored messages.
-
+        response = form + '/n'.join(memory)
         # 3. Send the response.
-
+        self.wfile.write(response.encode())
 if __name__ == '__main__':
     server_address = ('', 8000)
     httpd = HTTPServer(server_address, MessageHandler)
